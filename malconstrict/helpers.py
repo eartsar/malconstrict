@@ -1,6 +1,5 @@
 import json
-import malapi as mal
-import models
+import malconstrict.models
 
 
 """This module contains helper functions for JSON to Model conversion."""
