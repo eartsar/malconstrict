@@ -3,7 +3,15 @@ import malapi as mal
 import models
 
 
+"""This module contains helper functions for JSON to Model conversion."""
+
+
 def json_to_anime(data):
+    """Transforms a JSON blob to an Anime object.
+
+    Keyword arguments:
+    data -- the json blob
+    """
     anime = models.Anime()
     d = json.loads(data)
     for key in d.keys():
@@ -12,6 +20,11 @@ def json_to_anime(data):
 
 
 def json_to_list_of_anime(data):
+    """Transforms a JSON blob to a list of Anime objects.
+
+    Keyword arguments:
+    data -- the json blob
+    """
     anime_list = []
     entries = json.loads(data)
     for entry in entries:
@@ -23,12 +36,17 @@ def json_to_list_of_anime(data):
 
 
 def json_to_anime_list(data):
+    """Transforms a JSON blob to an AnimeList object.
+
+    Keyword arguments:
+    data -- the json blob
+    """
     anime_list = models.AnimeList()
     anime_list.anime = []
     d = json.loads(data)
     entries = d['anime']
     anime_list.statistics = d['statistics']
-    
+
     for entry in entries:
         anime = models.Anime()
         for key in entry.keys():
@@ -38,6 +56,11 @@ def json_to_anime_list(data):
 
 
 def json_to_manga(data):
+    """Transforms a JSON blob to a Manga object.
+
+    Keyword arguments:
+    data -- the json blob
+    """
     manga = models.Manga()
     d = json.loads(data)
     for key in d.keys():
@@ -46,6 +69,11 @@ def json_to_manga(data):
 
 
 def json_to_list_of_manga(data):
+    """Transforms a JSON blob to a list of Manga objects.
+
+    Keyword arguments:
+    data -- the json blob
+    """
     manga_list = []
     entries = json.loads(data)
     for entry in entries:
@@ -57,6 +85,11 @@ def json_to_list_of_manga(data):
 
 
 def json_to_manga_list(data):
+    """Transforms a JSON blob to a MangaList object.
+
+    Keyword arguments:
+    data -- the json blob
+    """
     manga_list = models.MangaList()
     manga_list.manga = []
     d = json.loads(data)

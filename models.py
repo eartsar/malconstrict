@@ -1,4 +1,8 @@
+"""This module contains models used in malconstrict."""
+
+
 class Anime(object):
+    """Model that representes an Anime object."""
     def __init__(self):
         self.id = None
         self.title = None
@@ -26,6 +30,7 @@ class Anime(object):
 
 
 class Manga(object):
+    """Model that represents a Manga object."""
     def __init__(self):
         self.id = None
         self.title = None
@@ -53,11 +58,13 @@ class Manga(object):
 
 
 class AnimeList(object):
+    """Model that represents an AnimeList object."""
     def __init__(self):
         self.anime = None
         self.statistics = None
 
 
 class MangaList(object):
+    """Model that represents an MangaList object."""
     def __init__(self):
         self.manga = None
