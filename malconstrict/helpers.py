@@ -1,8 +1,10 @@
 import json
-import malconstrict.models
+import malconstrict.models as models
+import malconstrict.constants as constants
 
 
-"""This module contains helper functions for JSON to Model conversion."""
+"""This module contains helper functions for JSON to Model conversion, 
+sorting, searching, and more."""
 
 
 def json_to_anime(data):
@@ -101,3 +103,76 @@ def json_to_manga_list(data):
             setattr(manga, key, entry[key])
         manga_list.manga.append(manga)
     return manga_list
+
+
+# unsectioned sort among all entries
+def sort_anime(anime_list, how='title'):
+    lst = []
+    if isinstance(anime_list, models.AnimeList):
+        lst = anime_list.anime
+    else:
+        lst = anime_list
+    
+    if how == 'popularity':
+        print 'sorting by popularity...'
+        lst.sort(key=lambda a: a.popularity_rank)
+    elif how == 'title':
+        print 'sorting by title...'
+        lst.sort(key=lambda a: a.title.lower())
+    elif how == 'rank':
+        print 'sorting by rank...'
+        lst.sort(key=lambda a: a.rank)
+    elif how == 'score':
+        print 'sorting by score...'
+        lst.sort(key=lambda a: a.score)
+
+
+# returns a dictionary, sectioned sorts
+def sort_anime_sectional(anime_list, how='title'):
+    lst = []
+    if isinstance(anime_list, models.AnimeList):
+        lst = anime_list.anime
+    else:
+        lst = anime_list
+    
+    lists = {}
+    lists['watching'] = []
+    lists['completed'] = []
+    lists['on_hold'] = []
+    lists['dropped'] = []
+    lists['plan_to_watch'] = []
+    
+    for entry in lst:
+        if entry.watched_status == 'watching' or entry.watched_status == constants.WATCHING:
+            lists['watching'].append(entry)
+        elif entry.watched_status == 'completed' or entry.watched_status == constants.COMPLETED:
+            lists['completed'].append(entry)
+        elif entry.watched_status == 'on-hold' or entry.watched_status == constants.ON_HOLD:
+            lists['on_hold'].append(entry)
+        elif entry.watched_status == 'dropped' or entry.watched_status == constants.DROPPED:
+            lists['dropped'].append(entry)
+        elif entry.watched_status == 'plan to watch' or entry.watched_status == constants.PLAN_TO_WATCH:
+            lists['plan_to_watch'].append(entry)
+    
+    for key in lists:
+        sort_anime(lists[key], how)
+    
+    return lists
+
+
+def search_substring(substr, anime_list):
+    lst = []
+    if isinstance(anime_list, models.AnimeList):
+        lst = anime_list.anime
+    else:
+        lst = anime_list
+    
+    ret = []
+    for entry in lst:
+        if entry.title.lower().find(substr.lower()) != -1:
+            ret.append(entry)
+    
+    sort_anime(ret)
+    return ret
+    
+

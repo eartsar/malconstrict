@@ -1,6 +1,6 @@
-import malconstrict.models
-import malconstrict.helpers
-import malconstrict.exceptions
+import malconstrict.models as models
+import malconstrict.helpers as helpers
+import malconstrict.exceptions as exceptions
 
 import urllib2
 import requests
