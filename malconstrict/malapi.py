@@ -23,7 +23,7 @@ def raw_get_anime_list(username):
     """
     response = requests.get(apiurl + '/animelist/' + username)
     if response.status_code == 500:
-        raise exceptions.UserNotFoundException()
+        return None
     return response.content
 
 
@@ -49,7 +49,7 @@ def raw_get_anime_details(anime_id, mine=0, auth_token=None):
             apiurl + '/anime/' + str(anime_id) + '?mine=' + str(mine))
 
     if response.status_code == 404:
-        raise exceptions.EntryNotFoundException()
+        return None
     return response.content
 
 
@@ -130,7 +130,7 @@ def raw_get_manga_list(username):
     """
     response = requests.get(apiurl + '/mangalist/' + username)
     if response.status_code == 500:
-        raise exceptions.UserNotFoundException()
+        return None
     return response.content
 
 
@@ -156,7 +156,7 @@ def raw_get_manga_details(manga_id, mine=0, auth_token=None):
             apiurl + '/manga/' + str(manga_id) + '?mine=' + str(mine))
 
     if response.status_code == 404:
-        raise exceptions.EntryNotFoundException()
+        return None
     return response.content
 
 
@@ -180,6 +180,8 @@ def get_anime_list(username):
     username -- the username whose list is to be fetched
     """
     raw = raw_get_anime_list(username)
+    if raw == None:
+        return None
     return helpers.json_to_anime_list(raw)
 
 
@@ -193,6 +195,8 @@ def get_anime_details(anime_id, mine=0, auth_token=None):
     auth_token -- a two value tuple that defines the (user, password)
     """
     raw = raw_get_anime_details(anime_id, mine=mine, auth_token=auth_token)
+    if raw == None:
+        return None
     return helpers.json_to_anime(raw)
 
 

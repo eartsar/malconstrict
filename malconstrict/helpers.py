@@ -106,7 +106,7 @@ def json_to_manga_list(data):
 
 
 # unsectioned sort among all entries
-def sort_anime(anime_list, how='title'):
+def sort_anime(anime_list, how='title', descending=False):
     lst = []
     if isinstance(anime_list, models.AnimeList):
         lst = anime_list.anime
@@ -114,21 +114,17 @@ def sort_anime(anime_list, how='title'):
         lst = anime_list
     
     if how == 'popularity':
-        print 'sorting by popularity...'
-        lst.sort(key=lambda a: a.popularity_rank)
+        lst.sort(key=lambda a: a.popularity_rank, reverse=descending)
     elif how == 'title':
-        print 'sorting by title...'
-        lst.sort(key=lambda a: a.title.lower())
-    elif how == 'rank':
-        print 'sorting by rank...'
-        lst.sort(key=lambda a: a.rank)
+        lst.sort(key=lambda a: a.title.lower(), reverse=descending)
+    elif how == 'members_score':
+        lst.sort(key=lambda a: a.members_score, reverse=descending)
     elif how == 'score':
-        print 'sorting by score...'
-        lst.sort(key=lambda a: a.score)
+        lst.sort(key=lambda a: a.score, reverse=descending)
 
 
 # returns a dictionary, sectioned sorts
-def sort_anime_sectional(anime_list, how='title'):
+def sort_anime_sectional(anime_list, how='title', descending=False):
     lst = []
     if isinstance(anime_list, models.AnimeList):
         lst = anime_list.anime
@@ -138,9 +134,11 @@ def sort_anime_sectional(anime_list, how='title'):
     lists = {}
     lists['watching'] = []
     lists['completed'] = []
-    lists['on_hold'] = []
+    lists['on-hold'] = []
     lists['dropped'] = []
-    lists['plan_to_watch'] = []
+    lists['plan to watch'] = []
+    
+    sort_anime(lst, how, descending)
     
     for entry in lst:
         if entry.watched_status == 'watching' or entry.watched_status == constants.WATCHING:
@@ -148,14 +146,11 @@ def sort_anime_sectional(anime_list, how='title'):
         elif entry.watched_status == 'completed' or entry.watched_status == constants.COMPLETED:
             lists['completed'].append(entry)
         elif entry.watched_status == 'on-hold' or entry.watched_status == constants.ON_HOLD:
-            lists['on_hold'].append(entry)
+            lists['on-hold'].append(entry)
         elif entry.watched_status == 'dropped' or entry.watched_status == constants.DROPPED:
             lists['dropped'].append(entry)
         elif entry.watched_status == 'plan to watch' or entry.watched_status == constants.PLAN_TO_WATCH:
-            lists['plan_to_watch'].append(entry)
-    
-    for key in lists:
-        sort_anime(lists[key], how)
+            lists['plan to watch'].append(entry)
     
     return lists
 
