@@ -22,7 +22,7 @@ def raw_get_anime_list(username):
     username -- the name of the user whose anime list is requested
     """
     response = requests.get(apiurl + '/animelist/' + username)
-    if response.status_code == 500:
+    if response.status_code != 200:
         return None
     return response.content
 
@@ -74,6 +74,8 @@ def raw_search_anime(query):
     query -- The query to send to MAL's search
     """
     response = requests.get(apiurl + '/anime/search?q=' + urllib2.quote(query))
+    if response.status_code != 200:
+        return None
     return response.content
 
 
@@ -207,6 +209,8 @@ def search_anime(query):
     query -- The query. This is encoded internally SO NO WORRIES I HOPE!
     """
     raw = raw_search_anime(query)
+    if raw == None:
+        return None
     return helpers.json_to_list_of_anime(raw)
 
 
